@@ -1,0 +1,589 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Baikunth Hub — explore learning, coding, tools, games and creativity in one place.">
+<meta name="theme-color" content="#080d1c">
+<title>Baikunth Hub | Explore Your World</title>
+
+<style>
+:root {
+  --bg: #080d1c;
+  --panel: #111a30;
+  --text: #f4f7ff;
+  --muted: #a8b4ce;
+  --accent: #72f2c5;
+  --border: rgba(255,255,255,.12);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background .3s, color .3s;
+}
+body.light {
+  --bg: #f2f6ff;
+  --panel: #ffffff;
+  --text: #15203b;
+  --muted: #586780;
+  --accent: #087e69;
+  --border: rgba(20,35,65,.14);
+}
+button, a { font: inherit; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; }
+
+header {
+  width: min(1150px, 92%);
+  margin: auto;
+  padding: 22px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+.logo span { color: var(--accent); }
+.header-actions { display: flex; gap: 8px; }
+.small-btn {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 13px;
+}
+.small-btn:hover { border-color: var(--accent); }
+
+.hero {
+  width: min(1150px, 92%);
+  margin: 20px auto 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 42px;
+  align-items: center;
+}
+.eyebrow {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: bold;
+}
+h1 {
+  font-size: clamp(42px, 6vw, 76px);
+  line-height: 1.04;
+  letter-spacing: -2px;
+  margin: 18px 0;
+}
+h1 span { color: var(--accent); }
+.intro {
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 480px;
+  font-size: 16px;
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 27px;
+}
+.primary, .secondary {
+  display: inline-block;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-weight: bold;
+  transition: transform .2s;
+}
+.primary {
+  background: var(--accent);
+  color: #07131b;
+  border: 1px solid var(--accent);
+}
+.secondary {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+}
+.primary:hover, .secondary:hover { transform: translateY(-3px); }
+
+/* BIG AUTOMATIC PHOTO SLIDER */
+.slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: 0 20px 65px rgba(0,0,0,.25);
+}
+.slides {
+  position: relative;
+  height: 390px;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .9s ease;
+  pointer-events: none;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.slide img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 35%, rgba(3,8,20,.88));
+}
+.slide-caption {
+  position: absolute;
+  z-index: 2;
+  bottom: 25px;
+  left: 24px;
+  right: 24px;
+  color: white;
+}
+.slide-caption h2 { margin: 0 0 8px; font-size: 25px; }
+.slide-caption p { margin: 0; color: #e0e8f7; font-size: 14px; }
+.slider-controls {
+  position: absolute;
+  z-index: 5;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 8px;
+}
+.slider-controls button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #ffffff66;
+  background: #081020bb;
+  color: white;
+  font-size: 20px;
+}
+.dots {
+  position: absolute;
+  z-index: 5;
+  bottom: 13px;
+  right: 22px;
+  display: flex;
+  gap: 6px;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border: 0;
+  padding: 0;
+  border-radius: 20px;
+  background: #ffffff80;
+}
+.dot.active { width: 22px; background: white; }
+
+/* CONTINUOUS AUTO-SCROLL GALLERY */
+.gallery-section {
+  padding: 38px 0 55px;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.section-heading {
+  width: min(1150px, 92%);
+  margin: 0 auto 22px;
+}
+.section-heading h2 { margin: 0 0 8px; font-size: 28px; }
+.section-heading p { color: var(--muted); margin: 0; }
+.gallery-window {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+.gallery-track {
+  display: flex;
+  width: max-content;
+  gap: 16px;
+  animation: scrollGallery 32s linear infinite;
+}
+.gallery-window:hover .gallery-track {
+  animation-play-state: paused;
+}
+.gallery-card {
+  position: relative;
+  width: 235px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--panel);
+}
+.gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .5s;
+}
+.gallery-card:hover img { transform: scale(1.08); }
+.gallery-card span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 25px 12px 12px;
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(transparent, #061020e8);
+}
+@keyframes scrollGallery {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.features {
+  width: min(1150px, 92%);
+  margin: 60px auto;
+}
+.features h2 { font-size: 30px; margin-bottom: 8px; }
+.features > p { color: var(--muted); }
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 25px;
+}
+.feature {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--panel);
+  transition: transform .2s, border-color .2s;
+}
+.feature:hover { transform: translateY(-4px); border-color: var(--accent); }
+.feature .emoji { font-size: 27px; }
+.feature h3 { margin: 13px 0 8px; }
+.feature p { color: var(--muted); line-height: 1.6; font-size: 14px; }
+.feature a { color: var(--accent); font-weight: bold; font-size: 14px; }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 25px 4%;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+footer span { color: var(--accent); }
+
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; gap: 28px; margin-top: 10px; }
+  h1 { font-size: clamp(40px, 12vw, 62px); }
+  .slides { height: 300px; }
+  .feature-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-card { width: 190px; height: 125px; }
+}
+@media (max-width: 450px) {
+  .feature-grid { grid-template-columns: 1fr; }
+  .slides { height: 260px; }
+  .logo { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <a class="logo" href="index.html">BAIKUNTH <span>HUB.</span></a>
+  <div class="header-actions">
+    <button class="small-btn" id="languageBtn" type="button">हिन्दी</button>
+    <button class="small-btn" id="themeBtn" type="button" aria-label="Change theme">☀️ Theme</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <div class="eyebrow" id="eyebrow">YOUR DIGITAL WORLD</div>
+      <h1 id="mainTitle">Explore.<br>Create.<br><span>Grow.</span></h1>
+      <p class="intro" id="intro">
+        One place for learning, coding, useful tools, games and new ideas.
+        Start exploring your digital world today.
+      </p>
+      <div class="buttons">
+        <a class="primary" id="exploreBtn" href="dashboard.html">Explore Hub →</a>
+        <a class="secondary" id="aboutBtn" href="about.html">About Hub</a>
+      </div>
+    </div>
+
+    <div class="slider" aria-label="Automatic photo slideshow">
+      <div class="slides" id="slides">
+        <div class="slide active">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=85" alt="Beautiful green mountain landscape">
+          <div class="slide-caption">
+            <h2>Discover Nature</h2>
+            <p>Find inspiration in every new view.</p>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1100&q=85" alt="Computer circuit board">
+          <div class="slide-caption">
+            <h2>Enter the Tech World</h2>
+            <p>Learn, experiment and build something new.</p>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1100&q=85" alt="Mountain under a starry night sky">
+          <div class="slide-caption">
+            <h2>Dream Bigger</h2>
+            <p>Every great idea starts somewhere.</p>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1100&q=85" alt="Laptop with code on its screen">
+          <div class="slide-caption">
+            <h2>Build Your Future</h2>
+            <p>Turn your ideas into real projects.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slider-controls">
+        <button id="prevBtn" type="button" aria-label="Previous photo">‹</button>
+        <button id="nextBtn" type="button" aria-label="Next photo">›</button>
+      </div>
+      <div class="dots" id="dots" aria-label="Choose a photo"></div>
+    </div>
+  </section>
+
+  <section class="gallery-section">
+    <div class="section-heading">
+      <h2 id="galleryTitle">A World of Inspiration ✨</h2>
+      <p id="gallerySubtitle">A little gallery that keeps moving, just like your ideas.</p>
+    </div>
+
+    <div class="gallery-window">
+      <div class="gallery-track" id="galleryTrack">
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=500&q=80" alt="Snowy mountains">
+          <span>Mountains</span>
+        </div>
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=500&q=80" alt="Lake and mountains">
+          <span>Peaceful Places</span>
+        </div>
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80" alt="Electronic technology">
+          <span>Technology</span>
+        </div>
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=500&q=80" alt="Coding workspace">
+          <span>Coding</span>
+        </div>
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=500&q=80" alt="Green landscape">
+          <span>Adventure</span>
+        </div>
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=500&q=80" alt="Night sky">
+          <span>Night Sky</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2 id="featuresTitle">What's Inside Baikunth Hub?</h2>
+    <p id="featuresSubtitle">Choose a space and start exploring.</p>
+
+    <div class="feature-grid">
+      <article class="feature">
+        <div class="emoji">📚</div>
+        <h3 id="f1title">Study Zone</h3>
+        <p id="f1text">Study subjects, explore topics and practise quizzes.</p>
+        <a href="study.html" id="f1link">Start learning →</a>
+      </article>
+      <article class="feature">
+        <div class="emoji">🧰</div>
+        <h3 id="f2title">Useful Tools</h3>
+        <p id="f2text">Try calculators and everyday text tools.</p>
+        <a href="tools.html" id="f2link">Open tools →</a>
+      </article>
+      <article class="feature">
+        <div class="emoji">💻</div>
+        <h3 id="f3title">Coding Lab</h3>
+        <p id="f3text">Write HTML, CSS and JavaScript and see your results.</p>
+        <a href="coding.html" id="f3link">Start coding →</a>
+      </article>
+      <article class="feature">
+        <div class="emoji">🎮</div>
+        <h3 id="f4title">Game Zone</h3>
+        <p id="f4text">Play small games and enjoy a quick challenge.</p>
+        <a href="games.html" id="f4link">Play games →</a>
+      </article>
+      <article class="feature">
+        <div class="emoji">🚀</div>
+        <h3 id="f5title">Daily Challenges</h3>
+        <p id="f5text">Build useful habits one day at a time.</p>
+        <a href="challenges.html" id="f5link">Take a challenge →</a>
+      </article>
+      <article class="feature">
+        <div class="emoji">🤖</div>
+        <h3 id="f6title">AI Zone</h3>
+        <p id="f6text">Explore the demo assistant for ideas and learning.</p>
+        <a href="ai.html" id="f6link">Explore AI Zone →</a>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p id="footerText">© 2026 <span>Baikunth Hub</span> | Learn • Create • Grow</p>
+</footer>
+
+<script>
+// ===== AUTOMATIC BIG PHOTO SLIDER =====
+const slides = Array.from(document.querySelectorAll(".slide"));
+const dotsBox = document.getElementById("dots");
+let currentSlide = 0;
+let slideTimer;
+
+slides.forEach((slide, index) => {
+  const dot = document.createElement("button");
+  dot.className = "dot" + (index === 0 ? " active" : "");
+  dot.type = "button";
+  dot.setAttribute("aria-label", "Show photo " + (index + 1));
+  dot.addEventListener("click", () => {
+    showSlide(index);
+    restartTimer();
+  });
+  dotsBox.appendChild(dot);
+});
+
+function showSlide(index) {
+  currentSlide = (index + slides.length) % slides.length;
+  slides.forEach((slide, i) => {
+    slide.classList.toggle("active", i === currentSlide);
+  });
+  Array.from(dotsBox.children).forEach((dot, i) => {
+    dot.classList.toggle("active", i === currentSlide);
+  });
+}
+
+function nextSlide() {
+  showSlide(currentSlide + 1);
+}
+function prevSlide() {
+  showSlide(currentSlide - 1);
+}
+function restartTimer() {
+  clearInterval(slideTimer);
+  slideTimer = setInterval(nextSlide, 4000);
+}
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  nextSlide();
+  restartTimer();
+});
+document.getElementById("prevBtn").addEventListener("click", () => {
+  prevSlide();
+  restartTimer();
+});
+restartTimer();
+
+// Pause large slider while the visitor's pointer is over it.
+const slider = document.querySelector(".slider");
+slider.addEventListener("mouseenter", () => clearInterval(slideTimer));
+slider.addEventListener("mouseleave", restartTimer);
+
+// ===== CONTINUOUS GALLERY =====
+// Duplicate the gallery items so the scroll can loop smoothly.
+const galleryTrack = document.getElementById("galleryTrack");
+galleryTrack.innerHTML += galleryTrack.innerHTML;
+
+// ===== LIGHT / DARK THEME =====
+const themeBtn = document.getElementById("themeBtn");
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+  const lightOn = document.body.classList.contains("light");
+  themeBtn.textContent = lightOn ? "🌙 Dark" : "☀️ Theme";
+  localStorage.setItem("hubTheme", lightOn ? "light" : "dark");
+});
+if (localStorage.getItem("hubTheme") === "light") {
+  document.body.classList.add("light");
+  themeBtn.textContent = "🌙 Dark";
+}
+
+// ===== HINDI / ENGLISH SWITCH =====
+let hindi = false;
+const translations = {
+  eyebrow: ["YOUR DIGITAL WORLD", "आपकी डिजिटल दुनिया"],
+  mainTitle: ["Explore.<br>Create.<br><span>Grow.</span>", "खोजो।<br>बनाओ।<br><span>आगे बढ़ो।</span>"],
+  intro: [
+    "One place for learning, coding, useful tools, games and new ideas. Start exploring your digital world today.",
+    "पढ़ाई, कोडिंग, उपयोगी टूल्स, गेम्स और नए विचारों के लिए एक जगह। आज ही अपनी डिजिटल दुनिया खोजो।"
+  ],
+  exploreBtn: ["Explore Hub →", "हब देखें →"],
+  aboutBtn: ["About Hub", "हब के बारे में"],
+  galleryTitle: ["A World of Inspiration ✨", "प्रेरणा की दुनिया ✨"],
+  gallerySubtitle: ["A little gallery that keeps moving, just like your ideas.", "एक चलती हुई फोटो गैलरी, बिल्कुल तुम्हारे नए विचारों की तरह।"],
+  featuresTitle: ["What's Inside Baikunth Hub?", "Baikunth Hub में क्या है?"],
+  featuresSubtitle: ["Choose a space and start exploring.", "अपनी पसंद का सेक्शन चुनो और शुरुआत करो।"],
+  f1title: ["Study Zone", "पढ़ाई ज़ोन"],
+  f1text: ["Study subjects, explore topics and practise quizzes.", "विषय पढ़ो, टॉपिक समझो और क्विज़ का अभ्यास करो।"],
+  f1link: ["Start learning →", "पढ़ना शुरू करो →"],
+  f2title: ["Useful Tools", "काम के टूल्स"],
+  f2text: ["Try calculators and everyday text tools.", "कैलकुलेटर और रोज़मर्रा के टेक्स्ट टूल्स इस्तेमाल करो।"],
+  f2link: ["Open tools →", "टूल्स खोलो →"],
+  f3title: ["Coding Lab", "कोडिंग लैब"],
+  f3text: ["Write HTML, CSS and JavaScript and see your results.", "HTML, CSS और JavaScript लिखो और नतीजे देखो।"],
+  f3link: ["Start coding →", "कोडिंग शुरू करो →"],
+  f4title: ["Game Zone", "गेम ज़ोन"],
+  f4text: ["Play small games and enjoy a quick challenge.", "छोटे गेम खेलो और मज़ेदार चुनौतियाँ आज़माओ।"],
+  f4link: ["Play games →", "गेम खेलो →"],
+  f5title: ["Daily Challenges", "रोज़ की चुनौतियाँ"],
+  f5text: ["Build useful habits one day at a time.", "हर दिन अच्छी आदतें बनाओ।"],
+  f5link: ["Take a challenge →", "चुनौती अपनाओ →"],
+  f6title: ["AI Zone", "AI ज़ोन"],
+  f6text: ["Explore the demo assistant for ideas and learning.", "विचारों और पढ़ाई के लिए डेमो असिस्टेंट आज़माओ।"],
+  f6link: ["Explore AI Zone →", "AI ज़ोन देखें →"],
+  footerText: ["© 2026 <span>Baikunth Hub</span> | Learn • Create • Grow", "© 2026 <span>Baikunth Hub</span> | सीखो • बनाओ • बढ़ो"]
+};
+
+document.getElementById("languageBtn").addEventListener("click", () => {
+  hindi = !hindi;
+  document.documentElement.lang = hindi ? "hi" : "en";
+  document.getElementById("languageBtn").textContent = hindi ? "English" : "हिन्दी";
+
+  Object.entries(translations).forEach(([id, values]) => {
+    const element = document.getElementById(id);
+    if (element) element.innerHTML = values[hindi ? 1 : 0];
+  });
+});
+</script>
+</body>
+</html>

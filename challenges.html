@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Build good habits with daily learning and creativity challenges at Baikunth Hub.">
+<title>Challenge Zone | Baikunth Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080d1b;--card:#111a2e;--text:#f4f7ff;--muted:#aab6d0;--accent:#71f5c2;--border:#263653}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body.light{--bg:#f2f6ff;--card:#fff;--text:#15213a;--muted:#5c6880;--border:#d6dfef}
+header{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.logo{font-size:23px;font-weight:900;color:var(--accent)}
+button,a{cursor:pointer}
+header button,.back{padding:10px 13px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);text-decoration:none}
+main{max-width:1050px;margin:auto;padding:30px 18px}
+.hero{text-align:center;padding:15px 0 28px}
+.hero h1{font-size:clamp(30px,6vw,46px);margin-bottom:12px}
+.hero p{color:var(--muted);line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+.stat{padding:18px;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:14px}
+.stat strong{display:block;color:var(--accent);font-size:27px;margin-bottom:6px}
+.stat span{color:var(--muted);font-size:13px}
+.section-title{margin:25px 0 14px;font-size:23px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:15px}
+.card{padding:20px;background:var(--card);border:1px solid var(--border);border-radius:15px}
+.card h3{font-size:18px;margin-bottom:10px}
+.card p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:15px}
+.tag{display:inline-block;color:var(--accent);font-size:12px;margin-bottom:12px}
+.action{padding:11px 14px;border:0;border-radius:9px;background:var(--accent);color:#07130f;font-weight:bold}
+.full{width:100%}
+.progress-wrap{height:10px;background:var(--bg);border-radius:99px;overflow:hidden;margin:12px 0}
+.progress{height:100%;width:0;background:var(--accent);transition:width .2s}
+.list{list-style:none}
+.list li{padding:13px 0;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start}
+.list input{margin-top:4px;accent-color:#71f5c2;width:17px;height:17px}
+.list label{line-height:1.5}
+.note{color:var(--muted);font-size:13px;line-height:1.6;margin-top:13px}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:13px}
+@media(max-width:500px){.stats{grid-template-columns:1fr}.stat{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">BAIKUNTH HUB ⚡</div>
+  <div>
+    <button onclick="changeLanguage()" id="langBtn">हिन्दी</button>
+    <button onclick="document.body.classList.toggle('light')">☀️ Theme</button>
+    <a class="back" href="dashboard.html">← Dashboard</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 id="heading">🚀 Challenge Zone</h1>
+    <p id="subtitle">Small steps every day. Big progress over time.</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat"><strong id="doneCount">0</strong><span id="doneLabel">Challenges Completed</span></div>
+    <div class="stat"><strong id="totalCount">6</strong><span id="totalLabel">Total Challenges</span></div>
+    <div class="stat"><strong id="percentCount">0%</strong><span id="progressLabel">Overall Progress</span></div>
+  </section>
+
+  <h2 class="section-title" id="dailyTitle">🎯 Today's Challenges</h2>
+  <div class="grid" id="challengeGrid">
+    <article class="card">
+      <span class="tag">📚 LEARNING</span>
+      <h3 data-en="Study for 25 minutes" data-hi="25 मिनट पढ़ाई करो">Study for 25 minutes</h3>
+      <p data-en="Choose one subject and focus without distractions." data-hi="एक विषय चुनो और बिना ध्यान भटकाए पढ़ो।">Choose one subject and focus without distractions.</p>
+      <button class="action full" data-id="1" onclick="toggleChallenge(1)">Mark Complete</button>
+    </article>
+    <article class="card">
+      <span class="tag">💻 CODING</span>
+      <h3 data-en="Write some code" data-hi="थोड़ा कोड लिखो">Write some code</h3>
+      <p data-en="Practise HTML, CSS or JavaScript for a little while." data-hi="थोड़ी देर HTML, CSS या JavaScript का अभ्यास करो।">Practise HTML, CSS or JavaScript for a little while.</p>
+      <button class="action full" data-id="2" onclick="toggleChallenge(2)">Mark Complete</button>
+    </article>
+    <article class="card">
+      <span class="tag">🧠 KNOWLEDGE</span>
+      <h3 data-en="Learn 5 new facts" data-hi="5 नई बातें सीखो">Learn 5 new facts</h3>
+      <p data-en="Read something useful and write down five things you learnt." data-hi="कुछ उपयोगी पढ़ो और पाँच नई बातें लिखो।">Read something useful and write down five things you learnt.</p>
+      <button class="action full" data-id="3" onclick="toggleChallenge(3)">Mark Complete</button>
+    </article>
+    <article class="card">
+      <span class="tag">🎨 CREATIVITY</span>
+      <h3 data-en="Create something" data-hi="कुछ नया बनाओ">Create something</h3>
+      <p data-en="Make a drawing, a webpage, or a creative idea." data-hi="ड्रॉइंग, वेबपेज या कोई नया आइडिया बनाओ।">Make a drawing, a webpage, or a creative idea.</p>
+      <button class="action full" data-id="4" onclick="toggleChallenge(4)">Mark Complete</button>
+    </article>
+    <article class="card">
+      <span class="tag">📖 READING</span>
+      <h3 data-en="Read 5 pages" data-hi="5 पेज पढ़ो">Read 5 pages</h3>
+      <p data-en="Read a book or a school chapter carefully." data-hi="किताब या स्कूल का कोई अध्याय ध्यान से पढ़ो।">Read a book or a school chapter carefully.</p>
+      <button class="action full" data-id="5" onclick="toggleChallenge(5)">Mark Complete</button>
+    </article>
+    <article class="card">
+      <span class="tag">✨ REFLECTION</span>
+      <h3 data-en="Review your day" data-hi="अपने दिन की समीक्षा करो">Review your day</h3>
+      <p data-en="Write one thing you did well and one thing to improve." data-hi="एक अच्छी बात और एक सुधारने वाली बात लिखो।">Write one thing you did well and one thing to improve.</p>
+      <button class="action full" data-id="6" onclick="toggleChallenge(6)">Mark Complete</button>
+    </article>
+  </div>
+
+  <h2 class="section-title" id="progressTitle">📈 Your Progress</h2>
+  <div class="card">
+    <p id="progressText">Complete the challenges at your own pace.</p>
+    <div class="progress-wrap"><div class="progress" id="progressBar"></div></div>
+    <button class="action" onclick="resetChallenges()" id="resetBtn">Reset Today's Progress</button>
+    <p class="note" id="note">Your progress is saved in this browser on this device. It may not appear on other devices.</p>
+  </div>
+
+  <h2 class="section-title" id="checkTitle">✅ Personal Checklist</h2>
+  <div class="card">
+    <ul class="list" id="personalList">
+      <li><input type="checkbox" id="p1" onchange="saveChecklist()"><label for="p1" data-en="Organised my study space" data-hi="अपनी पढ़ाई की जगह व्यवस्थित की">Organised my study space</label></li>
+      <li><input type="checkbox" id="p2" onchange="saveChecklist()"><label for="p2" data-en="Revised something I learnt" data-hi="सीखी हुई किसी चीज़ का रिवीजन किया">Revised something I learnt</label></li>
+      <li><input type="checkbox" id="p3" onchange="saveChecklist()"><label for="p3" data-en="Took breaks when needed" data-hi="ज़रूरत पड़ने पर आराम किया">Took breaks when needed</label></li>
+      <li><input type="checkbox" id="p4" onchange="saveChecklist()"><label for="p4" data-en="Prepared for tomorrow" data-hi="कल की तैयारी की">Prepared for tomorrow</label></li>
+    </ul>
+  </div>
+</main>
+
+<footer id="footer">© 2026 Baikunth Hub | Progress, Not Perfection 🚀</footer>
+
+<script>
+let hindi=false;
+const dayKey=new Date().toISOString().slice(0,10);
+const storageKey="baikunthChallenges-"+dayKey;
+const checklistKey="baikunthChecklist-"+dayKey;
+let completed=[];
+
+try{
+  completed=JSON.parse(localStorage.getItem(storageKey)||"[]");
+  if(!Array.isArray(completed)) completed=[];
+}catch(e){completed=[]}
+
+function render(){
+  document.querySelectorAll("[data-id]").forEach(btn=>{
+    const id=Number(btn.dataset.id);
+    const done=completed.includes(id);
+    btn.textContent=done
+      ?(hindi?"✓ पूरा हुआ":"✓ Completed")
+      :(hindi?"पूरा करें":"Mark Complete");
+    btn.style.opacity=done?".75":"1";
+  });
+  const count=completed.length;
+  document.getElementById("doneCount").textContent=count;
+  document.getElementById("percentCount").textContent=Math.round(count/6*100)+"%";
+  document.getElementById("progressBar").style.width=(count/6*100)+"%";
+  document.getElementById("progressText").textContent=hindi
+    ?`${count} में से 6 चुनौतियाँ पूरी हुईं। अपनी गति से आगे बढ़ो!`
+    :`${count} of 6 challenges completed. Keep going at your own pace!`;
+}
+
+function toggleChallenge(id){
+  if(completed.includes(id)) completed=completed.filter(x=>x!==id);
+  else completed.push(id);
+  try{localStorage.setItem(storageKey,JSON.stringify(completed));}catch(e){}
+  render();
+}
+
+function resetChallenges(){
+  if(!confirm(hindi?"आज की प्रगति रीसेट करें?":"Reset today's progress?"))return;
+  completed=[];
+  try{localStorage.setItem(storageKey,"[]");}catch(e){}
+  render();
+}
+
+function saveChecklist(){
+  const values=[1,2,3,4].map(i=>document.getElementById("p"+i).checked);
+  try{localStorage.setItem(checklistKey,JSON.stringify(values));}catch(e){}
+}
+
+function loadChecklist(){
+  try{
+    const values=JSON.parse(localStorage.getItem(checklistKey)||"[false,false,false,false]");
+    [1,2,3,4].forEach(i=>{
+      document.getElementById("p"+i).checked=Boolean(values[i-1]);
+    });
+  }catch(e){}
+}
+
+function changeLanguage(){
+  hindi=!hindi;
+  document.getElementById("langBtn").textContent=hindi?"English":"हिन्दी";
+  document.getElementById("heading").textContent=hindi?"🚀 चैलेंज ज़ोन":"🚀 Challenge Zone";
+  document.getElementById("subtitle").textContent=hindi
+    ?"हर दिन छोटे कदम, समय के साथ बड़ी तरक्की।"
+    :"Small steps every day. Big progress over time.";
+  document.getElementById("dailyTitle").textContent=hindi?"🎯 आज की चुनौतियाँ":"🎯 Today's Challenges";
+  document.getElementById("doneLabel").textContent=hindi?"पूरी हुई चुनौतियाँ":"Challenges Completed";
+  document.getElementById("totalLabel").textContent=hindi?"कुल चुनौतियाँ":"Total Challenges";
+  document.getElementById("progressLabel").textContent=hindi?"कुल प्रगति":"Overall Progress";
+  document.getElementById("progressTitle").textContent=hindi?"📈 तुम्हारी प्रगति":"📈 Your Progress";
+  document.getElementById("checkTitle").textContent=hindi?"✅ व्यक्तिगत चेकलिस्ट":"✅ Personal Checklist";
+  document.getElementById("resetBtn").textContent=hindi?"आज की प्रगति रीसेट करें":"Reset Today's Progress";
+  document.getElementById("note").textContent=hindi
+    ?"प्रगति इसी डिवाइस के ब्राउज़र में सेव होती है। दूसरे डिवाइस पर नहीं दिख सकती।"
+    :"Your progress is saved in this browser on this device. It may not appear on other devices.";
+  document.getElementById("footer").textContent=hindi
+    ?"© 2026 Baikunth Hub | लगातार आगे बढ़ो 🚀"
+    :"© 2026 Baikunth Hub | Progress, Not Perfection 🚀";
+
+  document.querySelectorAll("[data-en][data-hi]").forEach(el=>{
+    el.textContent=hindi?el.dataset.hi:el.dataset.en;
+  });
+  render();
+}
+
+loadChecklist();
+render();
+</script>
+</body>
+</html>

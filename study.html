@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Hub | Baikunth Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080d1b;--card:#111a2e;--text:#f5f7ff;--muted:#a6b2ca;--line:#28334c;--accent:#9885ff}
+body.light{--bg:#f4f6ff;--card:#fff;--text:#17203a;--muted:#65718a;--line:#dce2f0}
+body{font-family:Arial,"Noto Sans Devanagari",sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{max-width:1100px;margin:auto;padding:22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-size:25px;font-weight:900}.logo span{color:var(--accent)}
+button{cursor:pointer;font:inherit}
+.control{background:var(--card);color:var(--text);border:1px solid var(--line);padding:10px 13px;border-radius:10px}
+main{max-width:1100px;margin:auto;padding:35px 22px 65px}
+.back{color:var(--accent);text-decoration:none;font-size:14px}
+.hero{margin:27px 0;padding:32px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(120deg,var(--card),var(--bg))}
+.tag{font-size:12px;letter-spacing:1.5px;color:var(--accent);font-weight:bold}
+h1{font-size:clamp(32px,6vw,53px);margin:17px 0}
+p{color:var(--muted);line-height:1.8}
+h2{font-size:22px;margin:30px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:22px;min-width:0}
+.emoji{font-size:31px;margin-bottom:14px}
+.card h3{font-size:18px;margin-bottom:10px}
+.card p{font-size:14px}
+.card button{margin-top:18px;background:#8270f5;color:white;border:0;padding:11px 14px;border-radius:10px}
+.panel{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.panel h2{margin:0 0 15px}
+select{width:100%;max-width:450px;padding:12px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px}
+.question{margin:18px 0;font-size:17px;line-height:1.7}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.answer{padding:13px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);text-align:left}
+.answer:hover{border-color:var(--accent)}
+#result{margin-top:15px;font-weight:bold;line-height:1.7}
+footer{text-align:center;padding:24px;color:var(--muted);border-top:1px solid var(--line);font-size:13px}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:470px){.grid,.answers{grid-template-columns:1fr}.hero{padding:22px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">BAIKUNTH <span>HUB</span></div>
+  <div style="display:flex;gap:8px">
+    <button class="control" id="langBtn">हिंदी</button>
+    <button class="control" id="themeBtn">☀️</button>
+  </div>
+</header>
+
+<main>
+  <a class="back" href="dashboard.html">← Back to Dashboard</a>
+
+  <section class="hero">
+    <div class="tag" id="tag">YOUR LEARNING SPACE</div>
+    <h1 id="heading">Study Hub 📚</h1>
+    <p id="intro">Learn step by step, practise questions and improve your skills every day.</p>
+  </section>
+
+  <h2 id="subjectHeading">Explore Subjects</h2>
+  <section class="grid">
+    <article class="card">
+      <div class="emoji">➗</div>
+      <h3 id="mathTitle">Mathematics</h3>
+      <p id="mathDesc">Real Numbers, Polynomials, Equations and more.</p>
+      <button onclick="showSubject('math')" id="mathBtn">Explore Maths</button>
+    </article>
+    <article class="card">
+      <div class="emoji">🔬</div>
+      <h3 id="scienceTitle">Science</h3>
+      <p id="scienceDesc">Physics, Chemistry and Biology concepts.</p>
+      <button onclick="showSubject('science')" id="scienceBtn">Explore Science</button>
+    </article>
+    <article class="card">
+      <div class="emoji">🌍</div>
+      <h3 id="socialTitle">Social Science</h3>
+      <p id="socialDesc">History, Geography, Civics and Economics.</p>
+      <button onclick="showSubject('social')" id="socialBtn">Explore SST</button>
+    </article>
+  </section>
+
+  <section class="panel" id="subjectPanel" hidden>
+    <h2 id="subjectPanelTitle">Subject topics</h2>
+    <p id="subjectPanelText"></p>
+  </section>
+
+  <h2 id="quizHeading">Quick Practice Quiz 🧠</h2>
+  <section class="panel">
+    <p id="quizIntro">Try this sample Class 10 question.</p>
+    <div class="question" id="question">What is the HCF of 12 and 18?</div>
+    <div class="answers" id="answers">
+      <button class="answer" onclick="checkAnswer(0)">A. 3</button>
+      <button class="answer" onclick="checkAnswer(1)">B. 6</button>
+      <button class="answer" onclick="checkAnswer(2)">C. 9</button>
+      <button class="answer" onclick="checkAnswer(3)">D. 12</button>
+    </div>
+    <div id="result" aria-live="polite"></div>
+    <button class="control" style="margin-top:15px" onclick="nextQuestion()" id="nextBtn">Next Question →</button>
+  </section>
+
+  <section class="panel">
+    <h2 id="planHeading">📅 Today's Study Plan</h2>
+    <p id="planText">Choose a small goal and tick it off when complete.</p>
+    <div style="display:grid;gap:14px;margin-top:18px">
+      <label><input type="checkbox"> <span id="task1">Revise one Maths topic</span></label>
+      <label><input type="checkbox"> <span id="task2">Read one Science concept</span></label>
+      <label><input type="checkbox"> <span id="task3">Solve 10 MCQs</span></label>
+    </div>
+  </section>
+</main>
+
+<footer id="footer">© 2026 Baikunth Hub · Keep Learning, Keep Growing!</footer>
+
+<script>
+const questions=[
+ {en:"What is the HCF of 12 and 18?",hi:"12 और 18 का HCF क्या है?",options:["3","6","9","12"],correct:1,exEn:"The HCF is 6.",exHi:"HCF = 6 है।"},
+ {en:"Which gas do plants absorb for photosynthesis?",hi:"प्रकाश संश्लेषण में पौधे कौन-सी गैस लेते हैं?",options:["Oxygen / ऑक्सीजन","Nitrogen / नाइट्रोजन","Carbon dioxide / कार्बन डाइऑक्साइड","Hydrogen / हाइड्रोजन"],correct:2,exEn:"Plants use carbon dioxide.",exHi:"पौधे कार्बन डाइऑक्साइड का उपयोग करते हैं।"},
+ {en:"What is the square of 13?",hi:"13 का वर्ग कितना है?",options:["156","169","139","179"],correct:1,exEn:"13 × 13 = 169.",exHi:"13 × 13 = 169।"},
+ {en:"What is the chemical formula of water?",hi:"पानी का रासायनिक सूत्र क्या है?",options:["CO₂","O₂","H₂O","NaCl"],correct:2,exEn:"Water is H₂O.",exHi:"पानी का सूत्र H₂O है।"}
+];
+let index=0,score=0,answered=false,lang="en";
+function renderQuestion(){
+ const q=questions[index];
+ document.getElementById("question").textContent=lang==="en"?q.en:q.hi;
+ document.getElementById("answers").innerHTML="";
+ q.options.forEach((option,i)=>{
+  const b=document.createElement("button");
+  b.className="answer";b.textContent=String.fromCharCode(65+i)+". "+option;
+  b.onclick=()=>checkAnswer(i);document.getElementById("answers").appendChild(b);
+ });
+ document.getElementById("result").textContent="";
+ document.getElementById("nextBtn").textContent=lang==="en"?"Next Question →":"अगला सवाल →";
+ answered=false;
+}
+function checkAnswer(choice){
+ if(answered)return;
+ answered=true;
+ const q=questions[index];
+ const correct=choice===q.correct;
+ if(correct)score++;
+ document.getElementById("result").textContent=(correct?(lang==="en"?"✅ Correct! ":"✅ सही जवाब! "):(lang==="en"?"❌ Not quite. ":"❌ सही जवाब नहीं। "))+ (lang==="en"?q.exEn:q.exHi);
+}
+function nextQuestion(){
+ if(!answered){document.getElementById("result").textContent=lang==="en"?"Choose an answer first.":"पहले एक जवाब चुनो।";return;}
+ if(index===questions.length-1){
+  document.getElementById("question").textContent=lang==="en"?"Quiz complete! Your score: ":"क्विज़ पूरा! आपका स्कोर: "+score+"/"+questions.length;
+  if(lang==="en")document.getElementById("question").textContent="Quiz complete! Your score: "+score+"/"+questions.length;
+  document.getElementById("answers").innerHTML="";
+  document.getElementById("result").textContent=lang==="en"?"Great work! Press Restart to try again.":"बहुत बढ़िया! दोबारा खेलने के लिए Restart दबाएँ।";
+  document.getElementById("nextBtn").textContent=lang==="en"?"Restart Quiz ↻":"फिर से खेलें ↻";
+  document.getElementById("nextBtn").onclick=()=>{index=0;score=0;document.getElementById("nextBtn").onclick=nextQuestion;renderQuestion();};
+  return;
+ }
+ index++;renderQuestion();
+}
+function showSubject(subject){
+ const data={
+  math:["Maths Topics","गणित के विषय","Real Numbers • Polynomials • Pair of Linear Equations • Quadratic Equations • Triangles • Trigonometry","वास्तविक संख्याएँ • बहुपद • दो चर वाले रैखिक समीकरण • द्विघात समीकरण • त्रिभुज • त्रिकोणमिति"],
+  science:["Science Topics","विज्ञान के विषय","Chemical Reactions • Acids and Bases • Light • Human Eye • Life Processes • Electricity","रासायनिक अभिक्रियाएँ • अम्ल और क्षार • प्रकाश • मानव नेत्र • जैव प्रक्रम • विद्युत"],
+  social:["Social Science Topics","सामाजिक विज्ञान के विषय","History • Geography • Political Science • Economics","इतिहास • भूगोल • राजनीति विज्ञान • अर्थशास्त्र"]
+ };
+ document.getElementById("subjectPanel").hidden=false;
+ document.getElementById("subjectPanelTitle").textContent=lang==="en"?data[subject][0]:data[subject][1];
+ document.getElementById("subjectPanelText").textContent=lang==="en"?data[subject][2]:data[subject][3];
+ document.getElementById("subjectPanel").scrollIntoView({behavior:"smooth",block:"center"});
+}
+document.getElementById("themeBtn").onclick=function(){
+ document.body.classList.toggle("light");
+};
+document.getElementById("langBtn").onclick=function(){
+ lang=lang==="en"?"hi":"en";
+ this.textContent=lang==="en"?"हिंदी":"English";
+ const t=lang==="en";
+ document.documentElement.lang=t?"en":"hi";
+ const texts={
+  tag:["YOUR LEARNING SPACE","आपकी पढ़ाई की जगह"],
+  heading:["Study Hub 📚","स्टडी हब 📚"],
+  intro:["Learn step by step, practise questions and improve your skills every day.","धीरे-धीरे सीखें, सवालों का अभ्यास करें और रोज़ अपनी क्षमता बढ़ाएँ।"],
+  subjectHeading:["Explore Subjects","विषय चुनें"],
+  mathTitle:["Mathematics","गणित"],mathDesc:["Real Numbers, Polynomials, Equations and more.","वास्तविक संख्याएँ, बहुपद, समीकरण और बहुत कुछ।"],mathBtn:["Explore Maths","गणित देखें"],
+  scienceTitle:["Science","विज्ञान"],scienceDesc:["Physics, Chemistry and Biology concepts.","भौतिकी, रसायन विज्ञान और जीव विज्ञान।"],scienceBtn:["Explore Science","विज्ञान देखें"],
+  socialTitle:["Social Science","सामाजिक विज्ञान"],socialDesc:["History, Geography, Civics and Economics.","इतिहास, भूगोल, नागरिक शास्त्र और अर्थशास्त्र।"],socialBtn:["Explore SST","सामाजिक विज्ञान देखें"],
+  quizHeading:["Quick Practice Quiz 🧠","क्विक प्रैक्टिस क्विज़ 🧠"],
+  quizIntro:["Try this sample Class 10 question.","कक्षा 10 का यह नमूना सवाल हल करो।"],
+  planHeading:["📅 Today's Study Plan","📅 आज की पढ़ाई का प्लान"],
+  planText:["Choose a small goal and tick it off when complete.","छोटा लक्ष्य चुनो और पूरा होने पर टिक लगाओ।"],
+  task1:["Revise one Maths topic","गणित का एक विषय दोहराओ"],
+  task2:["Read one Science concept","विज्ञान का एक कॉन्सेप्ट पढ़ो"],
+  task3:["Solve 10 MCQs","10 MCQ हल करो"],
+  footer:["© 2026 Baikunth Hub · Keep Learning, Keep Growing!","© 2026 Baikunth Hub · सीखते रहो, आगे बढ़ते रहो!"]
+ };
+ Object.keys(texts).forEach(id=>document.getElementById(id).textContent=texts[id][t?0:1]);
+ renderQuestion();
+};
+renderQuestion();
+</script>
+</body>
+</html>

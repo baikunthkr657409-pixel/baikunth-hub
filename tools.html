@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free online calculators and text tools at Baikunth Hub.">
+<title>Smart Tools | Baikunth Hub</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080d1b;--card:#111a2e;--text:#f4f7ff;--muted:#aab6d0;--accent:#71f5c2;--border:#263653}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body.light{--bg:#f2f6ff;--card:#fff;--text:#15213a;--muted:#5c6880;--border:#d6dfef}
+header{padding:20px 6%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.logo{font-size:23px;font-weight:900;color:var(--accent)}
+button,a{cursor:pointer}
+header button,.back{border:1px solid var(--border);background:var(--card);color:var(--text);padding:10px 14px;border-radius:10px;text-decoration:none}
+main{max-width:1100px;margin:auto;padding:35px 20px}
+.hero{text-align:center;padding:20px 0 30px}
+.hero h1{font-size:clamp(32px,6vw,48px);margin-bottom:12px}
+.hero p{color:var(--muted);line-height:1.6}
+.search{width:100%;padding:14px;margin:10px 0 25px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--border);padding:22px;border-radius:18px}
+.card h2{font-size:20px;margin-bottom:9px}
+.card p{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:17px}
+.card label{display:block;font-size:14px;margin:10px 0 6px}
+.card input,.card textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text);font-size:15px}
+.action{background:var(--accent);color:#07130f;border:0;border-radius:9px;padding:11px 14px;font-weight:bold;margin-top:12px;width:100%}
+.result{margin-top:12px;padding:11px;border-radius:9px;background:var(--bg);color:var(--accent);overflow-wrap:anywhere;min-height:18px;font-weight:bold}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:13px}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">BAIKUNTH HUB ⚡</div>
+  <div>
+    <button onclick="changeLanguage()" id="langBtn">हिन्दी</button>
+    <button onclick="document.body.classList.toggle('light')">☀️ Theme</button>
+    <a class="back" href="dashboard.html">← Dashboard</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 id="heading">Smart Tools Zone 🧰</h1>
+    <p id="subtitle">Simple, free tools for everyday tasks.</p>
+  </section>
+
+  <input class="search" id="search" placeholder="Search tools..." oninput="filterTools()">
+
+  <section class="grid" id="toolsGrid">
+
+    <article class="card" data-name="percentage percent calculator प्रतिशत">
+      <h2 id="percentTitle">📊 Percentage Calculator</h2>
+      <p id="percentDesc">Calculate what percentage one number is of another.</p>
+      <label id="obtLabel">Obtained marks</label>
+      <input type="number" id="obtained" placeholder="Example: 420">
+      <label id="totalLabel">Total marks</label>
+      <input type="number" id="total" placeholder="Example: 500">
+      <button class="action" onclick="percentage()" id="percentBtn">Calculate</button>
+      <div class="result" id="percentResult" aria-live="polite"></div>
+    </article>
+
+    <article class="card" data-name="age birthday calculator उम्र">
+      <h2 id="ageTitle">🎂 Age Calculator</h2>
+      <p id="ageDesc">Find your age in years, months and days.</p>
+      <label id="birthLabel">Date of birth</label>
+      <input type="date" id="birthDate">
+      <button class="action" onclick="calculateAge()" id="ageBtn">Calculate Age</button>
+      <div class="result" id="ageResult" aria-live="polite"></div>
+    </article>
+
+    <article class="card" data-name="word counter text words characters">
+      <h2 id="wordTitle">✍️ Word Counter</h2>
+      <p id="wordDesc">Count words and characters in your text.</p>
+      <textarea id="wordText" rows="4" placeholder="Type or paste your text here..." oninput="countWords()"></textarea>
+      <div class="result" id="wordResult" aria-live="polite">Words: 0 | Characters: 0</div>
+    </article>
+
+    <article class="card" data-name="simple calculator math">
+      <h2 id="calcTitle">➕ Simple Calculator</h2>
+      <p id="calcDesc">Add, subtract, multiply or divide two numbers.</p>
+      <label id="num1Label">First number</label>
+      <input type="number" id="num1" placeholder="Enter first number">
+      <label id="num2Label">Second number</label>
+      <input type="number" id="num2" placeholder="Enter second number">
+      <label id="operationLabel">Operation</label>
+      <select id="operation" style="width:100%;padding:11px;border-radius:9px;margin-top:4px;background:var(--bg);color:var(--text);border:1px solid var(--border)">
+        <option value="add">+</option>
+        <option value="sub">−</option>
+        <option value="mul">×</option>
+        <option value="div">÷</option>
+      </select>
+      <button class="action" onclick="calculate()" id="calcBtn">Calculate</button>
+      <div class="result" id="calcResult" aria-live="polite"></div>
+    </article>
+
+    <article class="card" data-name="uppercase lowercase text converter">
+      <h2 id="caseTitle">🔠 Text Case Converter</h2>
+      <p id="caseDesc">Convert text to UPPERCASE or lowercase.</p>
+      <textarea id="caseText" rows="3" placeholder="Write something..."></textarea>
+      <button class="action" onclick="convertCase('upper')" id="upperBtn">UPPERCASE</button>
+      <button class="action" onclick="convertCase('lower')" id="lowerBtn">lowercase</button>
+      <div class="result" id="caseResult" aria-live="polite"></div>
+      <button class="action" onclick="copyText()" id="copyBtn">Copy Result</button>
+    </article>
+
+    <article class="card" data-name="random number generator">
+      <h2 id="randomTitle">🎲 Random Number</h2>
+      <p id="randomDesc">Generate a random number in your chosen range.</p>
+      <label id="minLabel">Minimum number</label>
+      <input type="number" id="minNum" value="1">
+      <label id="maxLabel">Maximum number</label>
+      <input type="number" id="maxNum" value="100">
+      <button class="action" onclick="randomNumber()" id="randomBtn">Generate</button>
+      <div class="result" id="randomResult" aria-live="polite"></div>
+    </article>
+
+  </section>
+</main>
+
+<footer id="footer">© 2026 Baikunth Hub | Made with ❤️</footer>
+
+<script>
+let hindi = false;
+let convertedText = "";
+
+function percentage(){
+  const obtained = document.getElementById("obtained").value;
+  const total = document.getElementById("total").value;
+  const out = document.getElementById("percentResult");
+
+  if(obtained === "" || total === "" || Number(total) <= 0 || Number(obtained) < 0){
+    out.textContent = hindi ? "कृपया सही अंक भरें।" : "Please enter valid marks.";
+    return;
+  }
+  out.textContent = (Number(obtained)/Number(total)*100).toFixed(2) + "%";
+}
+
+function calculateAge(){
+  const value = document.getElementById("birthDate").value;
+  const out = document.getElementById("ageResult");
+  if(!value){
+    out.textContent = hindi ? "जन्मतिथि चुनें।" : "Please select your birth date.";
+    return;
+  }
+
+  const birth = new Date(value + "T00:00:00");
+  const today = new Date();
+  if(birth > today){
+    out.textContent = hindi ? "जन्मतिथि भविष्य की नहीं हो सकती।" : "Birth date cannot be in the future.";
+    return;
+  }
+
+  let years = today.getFullYear() - birth.getFullYear();
+  let months = today.getMonth() - birth.getMonth();
+  let days = today.getDate() - birth.getDate();
+
+  if(days < 0){
+    months--;
+    const previousMonthDays = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    days += previousMonthDays;
+  }
+  if(months < 0){
+    years--;
+    months += 12;
+  }
+
+  out.textContent = hindi
+    ? `${years} साल, ${months} महीने, ${days} दिन`
+    : `${years} years, ${months} months, ${days} days`;
+}
+
+function countWords(){
+  const text = document.getElementById("wordText").value;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const chars = text.length;
+  document.getElementById("wordResult").textContent = hindi
+    ? `शब्द: ${words} | अक्षर: ${chars}`
+    : `Words: ${words} | Characters: ${chars}`;
+}
+
+function calculate(){
+  const a = document.getElementById("num1").value;
+  const b = document.getElementById("num2").value;
+  const op = document.getElementById("operation").value;
+  const out = document.getElementById("calcResult");
+
+  if(a === "" || b === ""){
+    out.textContent = hindi ? "दोनों नंबर भरें।" : "Enter both numbers.";
+    return;
+  }
+
+  const x = Number(a), y = Number(b);
+  let answer;
+  if(op === "add") answer = x + y;
+  if(op === "sub") answer = x - y;
+  if(op === "mul") answer = x * y;
+  if(op === "div"){
+    if(y === 0){
+      out.textContent = hindi ? "शून्य से भाग नहीं कर सकते।" : "Cannot divide by zero.";
+      return;
+    }
+    answer = x / y;
+  }
+  out.textContent = (hindi ? "उत्तर: " : "Answer: ") + answer;
+}
+
+function convertCase(type){
+  const value = document.getElementById("caseText").value;
+  convertedText = type === "upper" ? value.toUpperCase() : value.toLowerCase();
+  document.getElementById("caseResult").textContent = convertedText;
+}
+
+async function copyText(){
+  if(!convertedText){
+    document.getElementById("caseResult").textContent =
+      hindi ? "पहले टेक्स्ट बदलें।" : "Convert some text first.";
+    return;
+  }
+  try{
+    await navigator.clipboard.writeText(convertedText);
+    document.getElementById("caseResult").textContent =
+      hindi ? "कॉपी हो गया!" : "Copied!";
+  }catch(error){
+    document.getElementById("caseResult").textContent =
+      hindi ? "कॉपी नहीं हुआ। टेक्स्ट को चुनकर कॉपी करें।" : "Copy unavailable. Select the text and copy it.";
+  }
+}
+
+function randomNumber(){
+  const minValue = document.getElementById("minNum").value;
+  const maxValue = document.getElementById("maxNum").value;
+  const min = Number(minValue), max = Number(maxValue);
+  const out = document.getElementById("randomResult");
+
+  if(minValue === "" || maxValue === "" || !Number.isInteger(min) ||
+     !Number.isInteger(max) || min > max){
+    out.textContent = hindi
+      ? "सही पूर्णांक सीमा भरें।"
+      : "Enter valid whole-number limits.";
+    return;
+  }
+  out.textContent = Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function filterTools(){
+  const query = document.getElementById("search").value.toLowerCase();
+  document.querySelectorAll(".card").forEach(card=>{
+    card.style.display = card.dataset.name.toLowerCase().includes(query) ? "" : "none";
+  });
+}
+
+function changeLanguage(){
+  hindi = !hindi;
+  const translations = {
+    heading:["Smart Tools Zone 🧰","स्मार्ट टूल्स ज़ोन 🧰"],
+    subtitle:["Simple, free tools for everyday tasks.","रोज़मर्रा के काम के लिए मुफ़्त टूल।"],
+    percentTitle:["📊 Percentage Calculator","📊 प्रतिशत कैलकुलेटर"],
+    percentDesc:["Calculate what percentage one number is of another.","दो अंकों से प्रतिशत निकालें।"],
+    obtLabel:["Obtained marks","प्राप्त अंक"],
+    totalLabel:["Total marks","कुल अंक"],
+    percentBtn:["Calculate","गणना करें"],
+    ageTitle:["🎂 Age Calculator","🎂 उम्र कैलकुलेटर"],
+    ageDesc:["Find your age in years, months and days.","अपनी उम्र साल, महीने और दिनों में जानें।"],
+    birthLabel:["Date of birth","जन्मतिथि"],
+    ageBtn:["Calculate Age","उम्र निकालें"],
+    wordTitle:["✍️ Word Counter","✍️ शब्द गिनें"],
+    wordDesc:["Count words and characters in your text.","टेक्स्ट के शब्द और अक्षर गिनें।"],
+    calcTitle:["➕ Simple Calculator","➕ साधारण कैलकुलेटर"],
+    calcDesc:["Add, subtract, multiply or divide two numbers.","दो अंकों को जोड़ें, घटाएँ, गुणा या भाग करें।"],
+    num1Label:["First number","पहला नंबर"],
+    num2Label:["Second number","दूसरा नंबर"],
+    operationLabel:["Operation","गणित की क्रिया"],
+    calcBtn:["Calculate","गणना करें"],
+    caseTitle:["🔠 Text Case Converter","🔠 टेक्स्ट बदलें"],
+    caseDesc:["Convert text to UPPERCASE or lowercase.","अक्षरों को बड़े या छोटे अक्षरों में बदलें।"],
+    upperBtn:["UPPERCASE","बड़े अक्षर"],
+    lowerBtn:["lowercase","छोटे अक्षर"],
+    copyBtn:["Copy Result","परिणाम कॉपी करें"],
+    randomTitle:["🎲 Random Number","🎲 रैंडम नंबर"],
+    randomDesc:["Generate a random number in your chosen range.","अपनी सीमा के बीच एक नंबर चुनें।"],
+    minLabel:["Minimum number","सबसे छोटा नंबर"],
+    maxLabel:["Maximum number","सबसे बड़ा नंबर"],
+    randomBtn:["Generate","बनाएँ"],
+    footer:["© 2026 Baikunth Hub | Made with ❤️","© 2026 Baikunth Hub | ❤️ से बनाया गया"]
+  };
+
+  for(const [id, values] of Object.entries(translations)){
+    document.getElementById(id).textContent = values[hindi ? 1 : 0];
+  }
+  document.getElementById("langBtn").textContent = hindi ? "English" : "हिन्दी";
+  document.getElementById("search").placeholder = hindi ? "टूल खोजें..." : "Search tools...";
+  document.getElementById("wordText").placeholder = hindi ? "यहाँ टेक्स्ट लिखें..." : "Type or paste your text here...";
+  document.getElementById("caseText").placeholder = hindi ? "कुछ लिखें..." : "Write something...";
+  countWords();
+}
+</script>
+</body>
+</html>

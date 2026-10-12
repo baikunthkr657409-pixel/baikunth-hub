@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Games Zone | Baikunth Hub</title>
+<meta name="description" content="Play free mini games at Baikunth Hub.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080d1b;--card:#111a2e;--text:#f4f7ff;--muted:#aab6d0;--accent:#71f5c2;--border:#263653}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body.light{--bg:#f2f6ff;--card:#fff;--text:#15213a;--muted:#5c6880;--border:#d6dfef}
+header{padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.logo{font-weight:900;font-size:23px;color:var(--accent)}
+button,a{cursor:pointer}
+header button,.back{padding:10px 13px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);text-decoration:none}
+main{max-width:1100px;margin:auto;padding:30px 18px}
+.hero{text-align:center;padding:15px 0 30px}
+.hero h1{font-size:clamp(32px,6vw,46px);margin-bottom:12px}
+.hero p{color:var(--muted);line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+.game{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:22px}
+.game h2{font-size:21px;margin-bottom:10px}
+.desc{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:18px}
+input{width:100%;padding:12px;margin:7px 0;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:9px;font-size:16px}
+.btn{width:100%;padding:12px;border:0;border-radius:9px;background:var(--accent);color:#07130f;font-weight:bold;margin-top:9px}
+.secondary{background:var(--bg);border:1px solid var(--border);color:var(--text)}
+.result{min-height:44px;padding:12px;margin-top:12px;background:var(--bg);border-radius:9px;color:var(--accent);text-align:center;line-height:1.5;overflow-wrap:anywhere}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.choices button{padding:14px 5px;font-size:23px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text)}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:280px;margin:15px auto}
+.cell{aspect-ratio:1;font-size:32px;font-weight:bold;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--accent)}
+.score{color:var(--muted);font-size:13px;margin-top:10px;text-align:center}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">BAIKUNTH HUB ⚡</div>
+  <div>
+    <button onclick="changeLanguage()" id="langBtn">हिन्दी</button>
+    <button onclick="document.body.classList.toggle('light')">☀️ Theme</button>
+    <a class="back" href="dashboard.html">← Dashboard</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 id="heading">🎮 Games Zone</h1>
+    <p id="subtitle">Take a break, play a game, and challenge yourself!</p>
+  </section>
+
+  <section class="grid">
+    <article class="game">
+      <h2 id="guessTitle">🔢 Number Guess</h2>
+      <p class="desc" id="guessDesc">Guess the secret number from 1 to 100.</p>
+      <input id="guessInput" type="number" min="1" max="100" placeholder="Enter 1–100">
+      <button class="btn" onclick="guessNumber()" id="guessBtn">Check Guess</button>
+      <button class="btn secondary" onclick="resetGuess()" id="guessReset">New Number</button>
+      <div class="result" id="guessResult" aria-live="polite">Make your first guess!</div>
+      <div class="score" id="guessCount">Attempts: 0</div>
+    </article>
+
+    <article class="game">
+      <h2 id="rpsTitle">✊ Rock Paper Scissors</h2>
+      <p class="desc" id="rpsDesc">Choose one. Can you beat the computer?</p>
+      <div class="choices">
+        <button onclick="playRPS('rock')" aria-label="Rock">✊</button>
+        <button onclick="playRPS('paper')" aria-label="Paper">✋</button>
+        <button onclick="playRPS('scissors')" aria-label="Scissors">✌️</button>
+      </div>
+      <div class="result" id="rpsResult" aria-live="polite">Choose your move!</div>
+      <div class="score" id="rpsScore">You: 0 | Computer: 0</div>
+      <button class="btn secondary" onclick="resetRPS()" id="rpsReset">Reset Score</button>
+    </article>
+
+    <article class="game">
+      <h2 id="ticTitle">⭕ Tic-Tac-Toe</h2>
+      <p class="desc" id="ticDesc">Play X against O on the same device.</p>
+      <div class="board" id="board">
+        <button class="cell" onclick="makeMove(0)"></button>
+        <button class="cell" onclick="makeMove(1)"></button>
+        <button class="cell" onclick="makeMove(2)"></button>
+        <button class="cell" onclick="makeMove(3)"></button>
+        <button class="cell" onclick="makeMove(4)"></button>
+        <button class="cell" onclick="makeMove(5)"></button>
+        <button class="cell" onclick="makeMove(6)"></button>
+        <button class="cell" onclick="makeMove(7)"></button>
+        <button class="cell" onclick="makeMove(8)"></button>
+      </div>
+      <div class="result" id="ticResult" aria-live="polite">X goes first!</div>
+      <button class="btn" onclick="resetTic()" id="ticReset">Restart Game</button>
+    </article>
+  </section>
+</main>
+
+<footer id="footer">© 2026 Baikunth Hub | Play Fair, Have Fun 🎮</footer>
+
+<script>
+let hindi=false;
+
+/* Number Guessing */
+let secret=Math.floor(Math.random()*100)+1;
+let attempts=0;
+let guessOver=false;
+
+function guessNumber(){
+  const input=document.getElementById("guessInput");
+  const value=input.value;
+  const result=document.getElementById("guessResult");
+
+  if(value==="" || !Number.isInteger(Number(value)) || Number(value)<1 || Number(value)>100){
+    result.textContent=hindi?"1 से 100 के बीच पूरा नंबर डालो।":"Enter a whole number from 1 to 100.";
+    return;
+  }
+  if(guessOver){
+    result.textContent=hindi?"नया नंबर शुरू करो।":"Start a new number first.";
+    return;
+  }
+
+  attempts++;
+  const n=Number(value);
+  if(n===secret){
+    result.textContent=hindi?`सही जवाब! 🎉 ${attempts} कोशिशों में!`:`Correct! 🎉 You got it in ${attempts} tries!`;
+    guessOver=true;
+  }else if(n<secret){
+    result.textContent=hindi?"और बड़ा नंबर ट्राई करो ⬆️":"Try a higher number ⬆️";
+  }else{
+    result.textContent=hindi?"और छोटा नंबर ट्राई करो ⬇️":"Try a lower number ⬇️";
+  }
+  document.getElementById("guessCount").textContent=(hindi?"कोशिशें: ":"Attempts: ")+attempts;
+}
+
+function resetGuess(){
+  secret=Math.floor(Math.random()*100)+1;
+  attempts=0;
+  guessOver=false;
+  document.getElementById("guessInput").value="";
+  document.getElementById("guessResult").textContent=hindi?"नया नंबर तैयार है!":"New number ready!";
+  document.getElementById("guessCount").textContent=hindi?"कोशिशें: 0":"Attempts: 0";
+}
+
+/* Rock Paper Scissors */
+let you=0,computer=0;
+const icons={rock:"✊",paper:"✋",scissors:"✌️"};
+
+function playRPS(choice){
+  const options=["rock","paper","scissors"];
+  const bot=options[Math.floor(Math.random()*3)];
+  let message="";
+
+  if(choice===bot){
+    message=hindi?"बराबरी!":"It's a tie!";
+  }else if(
+    (choice==="rock"&&bot==="scissors")||
+    (choice==="paper"&&bot==="rock")||
+    (choice==="scissors"&&bot==="paper")
+  ){
+    you++;
+    message=hindi?"तुम जीत गए! 🎉":"You win! 🎉";
+  }else{
+    computer++;
+    message=hindi?"कंप्यूटर जीत गया!":"Computer wins!";
+  }
+
+  document.getElementById("rpsResult").textContent=
+    `${icons[choice]} ${hindi?"तुम":"You"} vs ${icons[bot]} ${hindi?"कंप्यूटर":"Computer"} — ${message}`;
+  updateRPSScore();
+}
+
+function updateRPSScore(){
+  document.getElementById("rpsScore").textContent=
+    `${hindi?"तुम":"You"}: ${you} | ${hindi?"कंप्यूटर":"Computer"}: ${computer}`;
+}
+function resetRPS(){
+  you=0;computer=0;
+  document.getElementById("rpsResult").textContent=hindi?"चलो फिर से खेलें!":"Choose your move!";
+  updateRPSScore();
+}
+
+/* Tic Tac Toe */
+let cells=Array(9).fill("");
+let turn="X";
+let ticOver=false;
+const wins=[
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
+];
+
+function makeMove(index){
+  if(ticOver||cells[index])return;
+  cells[index]=turn;
+  renderBoard();
+
+  if(wins.some(line=>line.every(i=>cells[i]===turn))){
+    document.getElementById("ticResult").textContent=
+      (hindi?"खिलाड़ी ":"Player ")+turn+(hindi?" जीत गया! 🎉":" wins! 🎉");
+    ticOver=true;
+    return;
+  }
+  if(cells.every(Boolean)){
+    document.getElementById("ticResult").textContent=hindi?"मैच ड्रॉ!":"It's a draw!";
+    ticOver=true;
+    return;
+  }
+  turn=turn==="X"?"O":"X";
+  document.getElementById("ticResult").textContent=
+    (hindi?"अब खिलाड़ी ":"Player ")+turn+(hindi?" की बारी":"'s turn");
+}
+
+function renderBoard(){
+  document.querySelectorAll(".cell").forEach((button,i)=>{
+    button.textContent=cells[i];
+    button.disabled=Boolean(cells[i])||ticOver;
+  });
+}
+function resetTic(){
+  cells=Array(9).fill("");
+  turn="X";
+  ticOver=false;
+  document.querySelectorAll(".cell").forEach(button=>{
+    button.textContent="";
+    button.disabled=false;
+  });
+  document.getElementById("ticResult").textContent=hindi?"X पहले चलेगा!":"X goes first!";
+}
+
+/* Hindi / English */
+function changeLanguage(){
+  hindi=!hindi;
+  document.getElementById("langBtn").textContent=hindi?"English":"हिन्दी";
+  document.getElementById("heading").textContent=hindi?"🎮 गेम्स ज़ोन":"🎮 Games Zone";
+  document.getElementById("subtitle").textContent=hindi
+    ?"थोड़ा खेलो, मज़े करो और खुद को चुनौती दो!"
+    :"Take a break, play a game, and challenge yourself!";
+  document.getElementById("guessTitle").textContent=hindi?"🔢 नंबर पहचानो":"🔢 Number Guess";
+  document.getElementById("guessDesc").textContent=hindi?"1 से 100 के बीच छिपा नंबर पहचानो।":"Guess the secret number from 1 to 100.";
+  document.getElementById("guessInput").placeholder=hindi?"1–100 डालो":"Enter 1–100";
+  document.getElementById("guessBtn").textContent=hindi?"जवाब जाँचें":"Check Guess";
+  document.getElementById("guessReset").textContent=hindi?"नया नंबर":"New Number";
+  document.getElementById("guessCount").textContent=(hindi?"कोशिशें: ":"Attempts: ")+attempts;
+  document.getElementById("rpsTitle").textContent=hindi?"✊ पत्थर कागज़ कैंची":"✊ Rock Paper Scissors";
+  document.getElementById("rpsDesc").textContent=hindi?"एक चुनो और कंप्यूटर को हराओ!":"Choose one. Can you beat the computer?";
+  document.getElementById("rpsReset").textContent=hindi?"स्कोर रीसेट":"Reset Score";
+  document.getElementById("ticTitle").textContent=hindi?"⭕ टिक-टैक-टो":"⭕ Tic-Tac-Toe";
+  document.getElementById("ticDesc").textContent=hindi?"एक ही डिवाइस पर X और O खेलो।":"Play X against O on the same device.";
+  document.getElementById("ticReset").textContent=hindi?"फिर से खेलें":"Restart Game";
+  document.getElementById("footer").textContent=hindi
+    ?"© 2026 Baikunth Hub | मज़े से खेलो 🎮"
+    :"© 2026 Baikunth Hub | Play Fair, Have Fun 🎮";
+  updateRPSScore();
+}
+
+resetGuess();
+updateRPSScore();
+</script>
+</body>
+</html>

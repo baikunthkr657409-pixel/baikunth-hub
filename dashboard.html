@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baikunth Hub | Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#090e1d;--card:#121b30;--text:#f5f7ff;--muted:#9eacc7;--line:#27334c;--accent:#8b7cff}
+body.light{--bg:#f1f4ff;--card:#fff;--text:#18203a;--muted:#65718b;--line:#dce2f0}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:.25s}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px max(20px,calc((100% - 1100px)/2));border-bottom:1px solid var(--line)}
+.logo{font-size:23px;font-weight:800}.logo span{color:var(--accent)}
+button{cursor:pointer;font:inherit}
+.theme{background:var(--card);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px 13px}
+main{max-width:1100px;margin:auto;padding:35px 20px 60px}
+.welcome{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+h1{font-size:clamp(27px,5vw,40px);margin-bottom:10px}
+p{color:var(--muted);line-height:1.7}
+.date{color:var(--muted);font-size:13px;margin-top:9px}
+.search{width:100%;padding:15px 17px;border-radius:13px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:15px;outline:none;margin-bottom:27px}
+.search:focus{border-color:var(--accent)}
+.section-title{font-size:21px;margin-bottom:17px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;text-decoration:none;color:var(--text);min-height:185px;transition:transform .2s,border-color .2s;display:flex;flex-direction:column;align-items:flex-start}
+.card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.emoji{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:#8b7cff1c;font-size:25px;margin-bottom:16px}
+.card h3{font-size:18px;margin-bottom:8px}
+.card p{font-size:13px;flex:1}
+.open{font-size:13px;color:var(--accent);margin-top:15px;font-weight:bold}
+.note{margin-top:30px;padding:17px;border:1px solid var(--line);border-radius:14px;color:var(--muted);font-size:13px;line-height:1.8}
+footer{text-align:center;border-top:1px solid var(--line);padding:23px;color:var(--muted);font-size:13px}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.grid{grid-template-columns:1fr}.card{min-height:155px}.welcome{align-items:flex-start}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Baikunth<span>Hub.</span></div>
+  <button class="theme" id="themeBtn">☀️ Theme</button>
+</header>
+
+<main>
+  <section class="welcome">
+    <div>
+      <h1>Welcome to your Hub! 🚀</h1>
+      <p>Study, create, explore and grow — sab ek hi jagah.</p>
+      <div class="date" id="today"></div>
+    </div>
+    <a href="index.html" style="color:var(--accent);text-decoration:none">← Home</a>
+  </section>
+
+  <input class="search" id="search" type="search" placeholder="🔍 Search Study, AI, Coding, Games..." aria-label="Search sections">
+
+  <h2 class="section-title">Explore your world</h2>
+  <section class="grid" id="grid">
+
+    <a class="card" href="study.html" data-search="study class 10 notes science maths quiz mcq">
+      <div class="emoji">📚</div><h3>Study Hub</h3>
+      <p>Class 10 notes, Maths, Science aur practice quizzes.</p>
+      <span class="open">Open Study →</span>
+    </a>
+
+    <a class="card" href="tools.html" data-search="tools calculator percentage age converter">
+      <div class="emoji">🧮</div><h3>Smart Tools</h3>
+      <p>Useful calculators aur everyday online tools.</p>
+      <span class="open">Open Tools →</span>
+    </a>
+
+    <a class="card" href="coding.html" data-search="coding html css javascript playground developer">
+      <div class="emoji">💻</div><h3>Coding Zone</h3>
+      <p>HTML, CSS aur JavaScript ke saath projects banao.</p>
+      <span class="open">Start Coding →</span>
+    </a>
+
+    <a class="card" href="games.html" data-search="games mini game puzzle play">
+      <div class="emoji">🎮</div><h3>Mini Games</h3>
+      <p>Fun games aur brain puzzles try karo.</p>
+      <span class="open">Play Games →</span>
+    </a>
+
+    <a class="card" href="challenges.html" data-search="daily challenges points streak goals">
+      <div class="emoji">🏆</div><h3>Daily Challenges</h3>
+      <p>Daily goals complete karo aur apni progress track karo.</p>
+      <span class="open">View Challenges →</span>
+    </a>
+
+    <a class="card" href="planner.html" data-search="planner todo tasks timetable study schedule">
+      <div class="emoji">📝</div><h3>My Planner</h3>
+      <p>Tasks, timetable aur daily study plan organize karo.</p>
+      <span class="open">Open Planner →</span>
+    </a>
+
+    <a class="card" href="ai.html" data-search="ai chatbot assistant artificial intelligence">
+      <div class="emoji">🤖</div><h3>AI Zone</h3>
+      <p>AI assistant experience ke liye dedicated section.</p>
+      <span class="open">Explore AI →</span>
+    </a>
+
+    <a class="card" href="about.html" data-search="about baiku nth hub contact information">
+      <div class="emoji">✨</div><h3>About Hub</h3>
+      <p>Baikunth Hub ke baare mein aur iske goals.</p>
+      <span class="open">Learn More →</span>
+    </a>
+
+  </section>
+
+  <div class="note">
+    💡 <strong>Tip:</strong> Upar search box mein section ka naam likhkar use jaldi dhoondo.
+    <br>📌 Har section ke liye uske naam ki HTML file isi folder mein honi chahiye.
+  </div>
+</main>
+
+<footer>© 2026 Baikunth Hub · Made with ❤️ by Baikunth</footer>
+
+<script>
+const themeBtn=document.getElementById("themeBtn");
+themeBtn.addEventListener("click",()=>{
+  document.body.classList.toggle("light");
+  themeBtn.textContent=document.body.classList.contains("light")?"🌙 Dark Mode":"☀️ Light Mode";
+});
+
+document.getElementById("today").textContent=
+  "📅 "+new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+
+document.getElementById("search").addEventListener("input",function(){
+  const query=this.value.toLowerCase().trim();
+  document.querySelectorAll(".card").forEach(card=>{
+    card.style.display=card.innerText.toLowerCase().includes(query)||
+      card.dataset.search.includes(query)?"flex":"none";
+  });
+});
+</script>
+</body>
+</html>

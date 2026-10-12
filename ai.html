@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Explore the Baikunth Hub AI assistant demo for learning, coding and creative ideas.">
+<title>AI Zone | Baikunth Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080d1b;--card:#111a2e;--text:#f4f7ff;--muted:#aab6d0;--accent:#71f5c2;--border:#263653}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body.light{--bg:#f2f6ff;--card:#fff;--text:#15213a;--muted:#5c6880;--border:#d6dfef}
+header{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.logo{font-size:23px;font-weight:900;color:var(--accent)}
+button,a{cursor:pointer}
+header button,.back{padding:10px 13px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);text-decoration:none}
+main{max-width:900px;margin:auto;padding:28px 16px}
+.hero{text-align:center;padding:15px 0 24px}
+.hero h1{font-size:clamp(30px,6vw,44px);margin-bottom:10px}
+.hero p{color:var(--muted);line-height:1.6}
+.status{text-align:center;font-size:12px;color:var(--accent);margin-top:12px}
+.chat{background:var(--card);border:1px solid var(--border);border-radius:17px;overflow:hidden}
+.chathead{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.avatar{width:42px;height:42px;display:grid;place-items:center;background:var(--bg);border:1px solid var(--border);border-radius:50%;font-size:22px}
+.chathead h2{font-size:17px;margin-bottom:4px}
+.chathead p{font-size:12px;color:var(--muted)}
+.messages{height:350px;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:13px}
+.msg{max-width:88%;padding:12px 14px;border-radius:13px;line-height:1.55;font-size:14px;overflow-wrap:anywhere;white-space:pre-wrap}
+.bot{align-self:flex-start;background:var(--bg);border:1px solid var(--border)}
+.user{align-self:flex-end;background:var(--accent);color:#07130f}
+.suggestions{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 15px}
+.suggestions button{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:20px;padding:9px 12px;font-size:12px}
+.composer{padding:14px;border-top:1px solid var(--border);display:flex;gap:9px}
+textarea{flex:1;min-width:0;resize:vertical;min-height:46px;max-height:120px;padding:13px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font:inherit}
+.send{padding:0 17px;border:0;border-radius:10px;background:var(--accent);color:#07130f;font-weight:bold}
+.note{font-size:12px;color:var(--muted);line-height:1.6;padding:0 16px 15px}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:18px}
+.feature{padding:17px;background:var(--card);border:1px solid var(--border);border-radius:13px}
+.feature h3{font-size:16px;margin-bottom:7px}
+.feature p{font-size:13px;line-height:1.6;color:var(--muted)}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:13px}
+@media(max-width:500px){.messages{height:320px}.composer{padding:10px}.send{padding:0 12px}.msg{max-width:95%}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">BAIKUNTH HUB ⚡</div>
+  <div>
+    <button onclick="changeLanguage()" id="langBtn">हिन्दी</button>
+    <button onclick="document.body.classList.toggle('light')">☀️ Theme</button>
+    <a class="back" href="dashboard.html" id="backBtn">← Dashboard</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 id="heading">🤖 AI Zone</h1>
+    <p id="subtitle">Ask questions, explore ideas and practise learning.</p>
+    <div class="status" id="status">DEMO MODE · No external AI connected</div>
+  </section>
+
+  <section class="chat">
+    <div class="chathead">
+      <div class="avatar">✨</div>
+      <div>
+        <h2 id="assistantName">Hub Assistant</h2>
+        <p id="assistantDesc">Learning & creativity demo</p>
+      </div>
+    </div>
+
+    <div class="messages" id="messages" aria-live="polite">
+      <div class="msg bot" id="welcome">Hello! 👋 I'm the Baikunth Hub demo assistant. Ask me about HTML, CSS, JavaScript or study tips.</div>
+    </div>
+
+    <div class="suggestions">
+      <button onclick="askSuggestion('Explain HTML')">💻 HTML</button>
+      <button onclick="askSuggestion('Give me study tips')">📚 Study Tips</button>
+      <button onclick="askSuggestion('What is CSS?')">🎨 CSS</button>
+      <button onclick="askSuggestion('Explain JavaScript')">⚡ JavaScript</button>
+    </div>
+
+    <form class="composer" id="chatForm">
+      <textarea id="question" rows="1" maxlength="1000" placeholder="Type your question..." aria-label="Your question" required></textarea>
+      <button class="send" type="submit" id="sendBtn">Send ➤</button>
+    </form>
+
+    <p class="note" id="note">This demo uses built-in sample replies, not a live AI model. Avoid entering passwords or private information.</p>
+  </section>
+
+  <section class="features">
+    <article class="feature">
+      <h3 id="f1Title">📘 Learn</h3>
+      <p id="f1Desc">Explore beginner-friendly explanations of web development.</p>
+    </article>
+    <article class="feature">
+      <h3 id="f2Title">💡 Ideas</h3>
+      <p id="f2Desc">Get inspiration for projects and creative experiments.</p>
+    </article>
+    <article class="feature">
+      <h3 id="f3Title">🧠 Practise</h3>
+      <p id="f3Desc">Use suggested questions to practise what you are learning.</p>
+    </article>
+  </section>
+</main>
+
+<footer id="footer">© 2026 Baikunth Hub | Learn Something New 🚀</footer>
+
+<script>
+let hindi=false;
+
+const replies={
+  html:{
+    en:"HTML is the language used to structure a webpage. For example:\n\n<h1>Hello!</h1>\n<p>My first page.</p>\n\nThe h1 element creates a heading, while p creates a paragraph. Try it in the Coding Zone!",
+    hi:"HTML वेबपेज का ढाँचा बनाने के लिए इस्तेमाल होता है। उदाहरण:\n\n<h1>नमस्ते!</h1>\n<p>मेरा पहला पेज।</p>\n\nh1 हेडिंग बनाता है और p पैराग्राफ। इसे Coding Zone में आज़माओ!"
+  },
+  css:{
+    en:"CSS controls how a webpage looks. For example:\n\nh1 { color: green; }\n\nThis changes heading text to green. You can also change backgrounds, spacing, borders and fonts.",
+    hi:"CSS वेबपेज का डिज़ाइन बदलता है। उदाहरण:\n\nh1 { color: green; }\n\nइससे हेडिंग का रंग हरा होगा। CSS से बैकग्राउंड, स्पेसिंग, बॉर्डर और फ़ॉन्ट भी बदल सकते हो।"
+  },
+  javascript:{
+    en:"JavaScript adds behaviour to a webpage. Example:\n\nalert('Hello!');\n\nIt can respond to clicks, calculate results and update page content. Practise with small projects first.",
+    hi:"JavaScript वेबपेज में काम करने की क्षमता जोड़ता है। उदाहरण:\n\nalert('Hello!');\n\nयह क्लिक पर प्रतिक्रिया दे सकता है, गणना कर सकता है और पेज का कंटेंट बदल सकता है।"
+  },
+  study:{
+    en:"Try this simple study routine:\n1. Pick one small topic.\n2. Study for 25 minutes.\n3. Take a short break.\n4. Solve a few questions without looking at notes.\n5. Review mistakes calmly.",
+    hi:"यह आसान पढ़ाई रूटीन आज़माओ:\n1. एक छोटा टॉपिक चुनो।\n2. 25 मिनट पढ़ो।\n3. थोड़ा आराम करो।\n4. नोट्स देखे बिना कुछ सवाल हल करो।\n5. गलतियों को समझकर दोहराओ।"
+  },
+  project:{
+    en:"Beginner project ideas:\n1. Personal portfolio\n2. Calculator\n3. Quiz game\n4. Study timetable\n5. To-do list\n\nStart with HTML, add CSS for design, then JavaScript for interactions.",
+    hi:"शुरुआती प्रोजेक्ट के आइडिया:\n1. Personal portfolio\n2. Calculator\n3. Quiz game\n4. Study timetable\n5. To-do list\n\nपहले HTML, फिर डिज़ाइन के लिए CSS और इंटरैक्शन के लिए JavaScript जोड़ो।"
+  },
+  hello:{
+    en:"Hello! 👋 Welcome to Baikunth Hub. Try asking about HTML, CSS, JavaScript, study tips or project ideas.",
+    hi:"नमस्ते! 👋 Baikunth Hub में स्वागत है। HTML, CSS, JavaScript, पढ़ाई या प्रोजेक्ट के बारे में पूछकर देखो।"
+  },
+  unknown:{
+    en:"I'm currently a demo assistant, so I only recognise a few built-in topics. Try asking about HTML, CSS, JavaScript, study tips or project ideas. A real AI connection can be added later through a secure backend.",
+    hi:"अभी मैं एक डेमो असिस्टेंट हूँ, इसलिए कुछ तय विषयों के जवाब देता हूँ। HTML, CSS, JavaScript, पढ़ाई या प्रोजेक्ट के बारे में पूछो। असली AI को बाद में सुरक्षित backend से जोड़ा जा सकता है।"
+  }
+};
+
+function getReply(question){
+  const q=question.toLowerCase();
+  let type="unknown";
+  if(/html|वेबपेज|वेब पेज/.test(q)) type="html";
+  else if(/css|design|डिज़ाइन|style|स्टाइल/.test(q)) type="css";
+  else if(/javascript|java script|जावास्क्रिप्ट/.test(q)) type="javascript";
+  else if(/study|पढ़ाई|पढाई|पढ़ने|टाइमटेबल|timetable|exam|परीक्षा/.test(q)) type="study";
+  else if(/project|प्रोजेक्ट|website idea|वेबसाइट बन/.test(q)) type="project";
+  else if(/hello|hi\b|hey|नमस्ते|हेलो/.test(q)) type="hello";
+  return replies[type][hindi?"hi":"en"];
+}
+
+function addMessage(text,type){
+  const message=document.createElement("div");
+  message.className="msg "+type;
+  message.textContent=text;
+  document.getElementById("messages").appendChild(message);
+  const area=document.getElementById("messages");
+  area.scrollTop=area.scrollHeight;
+}
+
+function sendQuestion(question){
+  const clean=question.trim();
+  if(!clean)return;
+  addMessage(clean,"user");
+  addMessage(getReply(clean),"bot");
+  document.getElementById("question").value="";
+  document.getElementById("question").focus();
+}
+
+function askSuggestion(question){
+  sendQuestion(question);
+}
+
+document.getElementById("chatForm").addEventListener("submit",function(event){
+  event.preventDefault();
+  sendQuestion(document.getElementById("question").value);
+});
+
+function changeLanguage(){
+  hindi=!hindi;
+  document.getElementById("langBtn").textContent=hindi?"English":"हिन्दी";
+  document.getElementById("heading").textContent=hindi?"🤖 AI ज़ोन":"🤖 AI Zone";
+  document.getElementById("subtitle").textContent=hindi
+    ?"सवाल पूछो, नए आइडिया खोजो और सीखने का अभ्यास करो।"
+    :"Ask questions, explore ideas and practise learning.";
+  document.getElementById("status").textContent=hindi
+    ?"डेमो मोड · असली AI जुड़ा नहीं है"
+    :"DEMO MODE · No external AI connected";
+  document.getElementById("assistantName").textContent=hindi?"हब असिस्टेंट":"Hub Assistant";
+  document.getElementById("assistantDesc").textContent=hindi?"सीखने और रचनात्मकता का डेमो":"Learning & creativity demo";
+  document.getElementById("question").placeholder=hindi?"अपना सवाल लिखें...":"Type your question...";
+  document.getElementById("question").setAttribute("aria-label",hindi?"आपका सवाल":"Your question");
+  document.getElementById("sendBtn").textContent=hindi?"भेजें ➤":"Send ➤";
+  document.getElementById("note").textContent=hindi
+    ?"यह डेमो पहले से लिखे जवाब इस्तेमाल करता है, असली AI नहीं। पासवर्ड या निजी जानकारी न लिखें।"
+    :"This demo uses built-in sample replies, not a live AI model. Avoid entering passwords or private information.";
+  document.getElementById("f1Title").textContent=hindi?"📘 सीखें":"📘 Learn";
+  document.getElementById("f1Desc").textContent=hindi?"वेब डेवलपमेंट की आसान जानकारी लें।":"Explore beginner-friendly explanations of web development.";
+  document.getElementById("f2Title").textContent=hindi?"💡 आइडिया":"💡 Ideas";
+  document.getElementById("f2Desc").textContent=hindi?"प्रोजेक्ट और रचनात्मक काम के आइडिया पाएँ।":"Get inspiration for projects and creative experiments.";
+  document.getElementById("f3Title").textContent=hindi?"🧠 अभ्यास":"🧠 Practise";
+  document.getElementById("f3Desc").textContent=hindi?"सुझाए गए सवालों से अभ्यास करें।":"Use suggested questions to practise what you are learning.";
+  document.getElementById("footer").textContent=hindi
+    ?"© 2026 Baikunth Hub | हर दिन कुछ नया सीखो 🚀"
+    :"© 2026 Baikunth Hub | Learn Something New 🚀";
+  document.getElementById("backBtn").textContent=hindi?"← डैशबोर्ड":"← Dashboard";
+}
+</script>
+</body>
+</html>

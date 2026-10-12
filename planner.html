@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Plan your day with the free Baikunth Hub study planner and task list.">
+<title>Study Planner | Baikunth Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080d1b;--card:#111a2e;--text:#f4f7ff;--muted:#aab6d0;--accent:#71f5c2;--border:#263653;--danger:#ff8585}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body.light{--bg:#f2f6ff;--card:#fff;--text:#15213a;--muted:#5c6880;--border:#d6dfef}
+header{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.logo{font-size:23px;font-weight:900;color:var(--accent)}
+button,a{cursor:pointer}
+header button,.back{padding:10px 13px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);text-decoration:none}
+main{max-width:1050px;margin:auto;padding:28px 18px}
+.hero{text-align:center;padding:12px 0 25px}
+.hero h1{font-size:clamp(30px,6vw,45px);margin-bottom:10px}
+.hero p{color:var(--muted);line-height:1.6}
+.datebox{text-align:center;color:var(--accent);margin:8px 0 22px;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.panel{padding:21px;background:var(--card);border:1px solid var(--border);border-radius:16px;min-width:0}
+.panel h2{font-size:20px;margin-bottom:15px}
+label{display:block;font-size:14px;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text);font-size:15px}
+.primary,.secondary,.delete{padding:11px 14px;border:0;border-radius:9px;font-weight:bold}
+.primary{background:var(--accent);color:#07130f}
+.secondary{background:var(--bg);border:1px solid var(--border);color:var(--text)}
+.delete{background:var(--bg);border:1px solid var(--danger);color:var(--danger)}
+.full{width:100%;margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:15px}
+.stat{padding:12px 5px;background:var(--bg);border-radius:10px;text-align:center}
+.stat strong{display:block;color:var(--accent);font-size:22px;margin-bottom:5px}
+.stat span{font-size:12px;color:var(--muted)}
+.progress-bg{height:9px;background:var(--bg);border-radius:20px;overflow:hidden;margin:12px 0}
+.progress{height:100%;width:0;background:var(--accent);transition:width .2s}
+.tasklist{list-style:none}
+.task{display:flex;align-items:flex-start;gap:10px;padding:13px 0;border-bottom:1px solid var(--border)}
+.task input[type=checkbox]{width:18px;height:18px;margin-top:3px;accent-color:#71f5c2;flex-shrink:0}
+.task-content{flex:1;min-width:0}
+.task-name{overflow-wrap:anywhere;line-height:1.5}
+.task.done .task-name{text-decoration:line-through;color:var(--muted)}
+.task-meta{display:block;color:var(--muted);font-size:12px;margin-top:5px}
+.task button{border:0;background:transparent;color:var(--danger);font-size:17px;padding:0 5px}
+.empty{text-align:center;color:var(--muted);padding:20px 0}
+.smallnote{font-size:12px;line-height:1.6;color:var(--muted);margin-top:12px}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:13px}
+@media(max-width:450px){.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:span 2}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">BAIKUNTH HUB ⚡</div>
+  <div>
+    <button onclick="changeLanguage()" id="langBtn">हिन्दी</button>
+    <button onclick="document.body.classList.toggle('light')">☀️ Theme</button>
+    <a href="dashboard.html" class="back" id="backBtn">← Dashboard</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 id="heading">📅 My Study Planner</h1>
+    <p id="subtitle">Organise your tasks. Focus on one step at a time.</p>
+  </section>
+
+  <div class="datebox" id="today"></div>
+
+  <div class="grid">
+    <section class="panel">
+      <h2 id="addTitle">➕ Add a Task</h2>
+      <form id="taskForm">
+        <label for="taskName" id="nameLabel">Task name</label>
+        <input id="taskName" maxlength="120" required placeholder="Example: Revise Maths Chapter 3">
+
+        <label for="taskSubject" id="subjectLabel">Subject / Category</label>
+        <select id="taskSubject">
+          <option value="Study">Study</option>
+          <option value="Maths">Maths</option>
+          <option value="Science">Science</option>
+          <option value="English">English</option>
+          <option value="Social Science">Social Science</option>
+          <option value="Coding">Coding</option>
+          <option value="Personal">Personal</option>
+        </select>
+
+        <label for="taskTime" id="timeLabel">Time (optional)</label>
+        <input id="taskTime" type="time">
+
+        <button class="primary full" type="submit" id="addBtn">Add Task</button>
+      </form>
+      <p class="smallnote" id="formNote">Keep tasks small and realistic. Remember to include breaks.</p>
+    </section>
+
+    <section class="panel">
+      <h2 id="progressTitle">📈 Today's Progress</h2>
+      <div class="stats">
+        <div class="stat"><strong id="total">0</strong><span id="totalLabel">Total</span></div>
+        <div class="stat"><strong id="completed">0</strong><span id="completedLabel">Completed</span></div>
+        <div class="stat"><strong id="remaining">0</strong><span id="remainingLabel">Remaining</span></div>
+      </div>
+      <div class="progress-bg"><div class="progress" id="progress"></div></div>
+      <p id="progressText">Add a task to start your plan.</p>
+      <button class="secondary full" onclick="addSampleTasks()" id="sampleBtn">Add Sample Study Plan</button>
+      <button class="delete full" onclick="clearCompleted()" id="clearBtn">Remove Completed Tasks</button>
+      <p class="smallnote" id="saveNote">Tasks are saved in this browser on this device.</p>
+    </section>
+  </div>
+
+  <section class="panel" style="margin-top:18px">
+    <h2 id="listTitle">📝 Today's Task List</h2>
+    <ul class="tasklist" id="taskList"></ul>
+    <p class="empty" id="emptyMessage">No tasks yet. Add your first task above!</p>
+  </section>
+</main>
+
+<footer id="footer">© 2026 Baikunth Hub | Plan Smart, Learn Better 🚀</footer>
+
+<script>
+let hindi=false;
+const todayKey=new Date().getFullYear()+"-"+String(new Date().getMonth()+1).padStart(2,"0")+"-"+String(new Date().getDate()).padStart(2,"0");
+const storeKey="baikunthPlanner-"+todayKey;
+let tasks=[];
+
+try{
+  const saved=JSON.parse(localStorage.getItem(storeKey)||"[]");
+  tasks=Array.isArray(saved)?saved:[];
+}catch(e){tasks=[]}
+
+const subjects={
+  "Study":["Study","पढ़ाई"],
+  "Maths":["Maths","गणित"],
+  "Science":["Science","विज्ञान"],
+  "English":["English","अंग्रेज़ी"],
+  "Social Science":["Social Science","सामाजिक विज्ञान"],
+  "Coding":["Coding","कोडिंग"],
+  "Personal":["Personal","व्यक्तिगत"]
+};
+
+function saveTasks(){
+  try{
+    localStorage.setItem(storeKey,JSON.stringify(tasks));
+  }catch(e){
+    alert(hindi?"ब्राउज़र में सेव नहीं हो पाया।":"Could not save in this browser.");
+  }
+}
+
+function renderTasks(){
+  const list=document.getElementById("taskList");
+  list.replaceChildren();
+
+  tasks.forEach(task=>{
+    const li=document.createElement("li");
+    li.className="task"+(task.done?" done":"");
+
+    const check=document.createElement("input");
+    check.type="checkbox";
+    check.checked=task.done;
+    check.setAttribute("aria-label",hindi?"काम पूरा हुआ":"Task completed");
+    check.addEventListener("change",()=>{
+      task.done=check.checked;
+      saveTasks();
+      renderTasks();
+    });
+
+    const content=document.createElement("div");
+    content.className="task-content";
+
+    const name=document.createElement("div");
+    name.className="task-name";
+    name.textContent=task.name;
+
+    const meta=document.createElement("span");
+    meta.className="task-meta";
+    const subject=subjects[task.subject]||subjects.Study;
+    meta.textContent=(hindi?subject[1]:subject[0])+(task.time?" • "+task.time:"");
+
+    content.append(name,meta);
+
+    const remove=document.createElement("button");
+    remove.textContent="✕";
+    remove.setAttribute("aria-label",hindi?"काम हटाएँ":"Delete task");
+    remove.addEventListener("click",()=>{
+      tasks=tasks.filter(t=>t.id!==task.id);
+      saveTasks();
+      renderTasks();
+    });
+
+    li.append(check,content,remove);
+    list.appendChild(li);
+  });
+
+  document.getElementById("emptyMessage").style.display=tasks.length?"none":"block";
+  const done=tasks.filter(t=>t.done).length;
+  const total=tasks.length;
+  const remaining=total-done;
+  const pct=total?Math.round(done/total*100):0;
+
+  document.getElementById("total").textContent=total;
+  document.getElementById("completed").textContent=done;
+  document.getElementById("remaining").textContent=remaining;
+  document.getElementById("progress").style.width=pct+"%";
+  document.getElementById("progressText").textContent=total
+    ?(hindi?`तुमने ${pct}% काम पूरा किया है।`:`You've completed ${pct}% of your tasks.`)
+    :(hindi?"अपना प्लान शुरू करने के लिए काम जोड़ो।":"Add a task to start your plan.");
+}
+
+document.getElementById("taskForm").addEventListener("submit",function(event){
+  event.preventDefault();
+  const name=document.getElementById("taskName").value.trim();
+  if(!name)return;
+
+  tasks.push({
+    id:Date.now()+Math.random(),
+    name:name,
+    subject:document.getElementById("taskSubject").value,
+    time:document.getElementById("taskTime").value,
+    done:false
+  });
+
+  saveTasks();
+  this.reset();
+  renderTasks();
+  document.getElementById("taskName").focus();
+});
+
+function addSampleTasks(){
+  if(tasks.length && !confirm(hindi?"मौजूदा कामों के साथ नमूना प्लान जोड़ें?":"Add sample tasks to your existing list?"))return;
+
+  const samples=[
+    ["Revise Maths","Maths","17:00"],
+    ["Study Science","Science","17:45"],
+    ["Practise coding","Coding","18:30"],
+    ["Review today's learning","Study","19:00"]
+  ];
+
+  samples.forEach((s,i)=>{
+    tasks.push({id:Date.now()+i+Math.random(),name:s[0],subject:s[1],time:s[2],done:false});
+  });
+  saveTasks();
+  renderTasks();
+}
+
+function clearCompleted(){
+  const count=tasks.filter(t=>t.done).length;
+  if(!count){
+    alert(hindi?"अभी कोई पूरा किया हुआ काम नहीं है।":"There are no completed tasks to remove.");
+    return;
+  }
+  if(!confirm(hindi?"पूरे किए हुए काम हटाएँ?":"Remove all completed tasks?"))return;
+  tasks=tasks.filter(t=>!t.done);
+  saveTasks();
+  renderTasks();
+}
+
+function changeLanguage(){
+  hindi=!hindi;
+  const text={
+    heading:["📅 My Study Planner","📅 मेरा स्टडी प्लानर"],
+    subtitle:["Organise your tasks. Focus on one step at a time.","अपने काम व्यवस्थित करो और एक-एक कदम पर ध्यान दो।"],
+    backBtn:["← Dashboard","← डैशबोर्ड"],
+    addTitle:["➕ Add a Task","➕ नया काम जोड़ें"],
+    nameLabel:["Task name","काम का नाम"],
+    subjectLabel:["Subject / Category","विषय / श्रेणी"],
+    timeLabel:["Time (optional)","समय (ज़रूरी नहीं)"],
+    addBtn:["Add Task","काम जोड़ें"],
+    formNote:["Keep tasks small and realistic. Remember to include breaks.","छोटे और आसान काम चुनो। बीच में आराम भी करो।"],
+    progressTitle:["📈 Today's Progress","📈 आज की प्रगति"],
+    totalLabel:["Total","कुल"],
+    completedLabel:["Completed","पूरे"],
+    remainingLabel:["Remaining","बाकी"],
+    sampleBtn:["Add Sample Study Plan","नमूना स्टडी प्लान जोड़ें"],
+    clearBtn:["Remove Completed Tasks","पूरे काम हटाएँ"],
+    saveNote:["Tasks are saved in this browser on this device.","काम इसी डिवाइस के ब्राउज़र में सेव होते हैं।"],
+    listTitle:["📝 Today's Task List","📝 आज के काम"],
+    emptyMessage:["No tasks yet. Add your first task above!","अभी कोई काम नहीं है। ऊपर पहला काम जोड़ो!"],
+    footer:["© 2026 Baikunth Hub | Plan Smart, Learn Better 🚀","© 2026 Baikunth Hub | सही प्लान, बेहतर पढ़ाई 🚀"]
+  };
+
+  Object.entries(text).forEach(([id,values])=>{
+    document.getElementById(id).textContent=values[hindi?1:0];
+  });
+
+  document.getElementById("langBtn").textContent=hindi?"English":"हिन्दी";
+  document.getElementById("taskName").placeholder=hindi?"जैसे: गणित अध्याय 3 दोहराएँ":"Example: Revise Maths Chapter 3";
+
+  const select=document.getElementById("taskSubject");
+  [...select.options].forEach(option=>{
+    option.textContent=(subjects[option.value]||subjects.Study)[hindi?1:0];
+  });
+
+  renderTasks();
+}
+
+const now=new Date();
+document.getElementById("today").textContent=now.toLocaleDateString("en-IN",{
+  weekday:"long",year:"numeric",month:"long",day:"numeric"
+});
+
+renderTasks();
+</script>
+</body>
+</html>
